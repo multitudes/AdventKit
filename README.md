@@ -1,2 +1,2 @@
 # AdventKit
- A package to be used with the Advent of Code
+ A Swift package to be used with the Advent of Code
