@@ -1,6 +1,6 @@
 //
 //  String+Ext.swift
-//  
+//
 //
 //  Created by Laurent B on 02/12/2020.
 //
@@ -9,7 +9,7 @@ import Foundation
 
 
 public extension String.StringInterpolation {
-	public mutating func appendInterpolation(_ number: Double, specifier: String){
+	mutating func appendInterpolation(_ number: Double, specifier: String){
 		appendLiteral(String(format:"%.3f", number))
 	}
 }
@@ -17,7 +17,16 @@ public extension String.StringInterpolation {
 
 public extension String {
 
-	public func getCapturedGroupsFrom(regexPattern: String)-> [String]? {
+	var lines: [String] {
+		components(separatedBy: .newlines)
+	}
+
+	var passportFields: [String] {
+		let lines = self.components(separatedBy: .newlines)
+		return lines.split { $0 == "" }.compactMap {Array($0)}.map { $0.joined(separator: " ")}
+	}
+
+	func getCapturedGroupsFrom(regexPattern: String)-> [String]? {
 		let text = self
 		let regex = try? NSRegularExpression(pattern: regexPattern)
 
@@ -31,12 +40,21 @@ public extension String {
 		return nil
 	}
 
+	func matches(regex: String, options: NSRegularExpression.Options = []) -> Bool {
+			do {
+				let regex = try NSRegularExpression(pattern: regex, options: options)
+				let matches = regex.matches(in: self, range: NSRange(location: 0, length: self.utf16.count))
+				return matches.count > 0
+			} catch {
+				return false
+			}
+		}
 
-	public subscript(idx: Int) -> Character {
+	subscript(idx: Int) -> Character {
 		Character(extendedGraphemeClusterLiteral: self[index(startIndex, offsetBy: idx)])
 	}
-	
-	public subscript(idx: Int) -> String {
+
+	subscript(idx: Int) -> String {
 		String(self[index(startIndex, offsetBy: idx)])
 	}
 }
