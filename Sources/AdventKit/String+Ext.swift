@@ -21,6 +21,11 @@ public extension String {
 		components(separatedBy: .newlines)
 	}
 
+	
+	mutating func replace(_ search: String, with replacement: String) {
+		self = self.replacingOccurrences(of: search, with: replacement)
+	}
+
 	var passportFields: [String] {
 		let lines = self.components(separatedBy: .newlines)
 		return lines.split { $0 == "" }.compactMap {Array($0)}.map { $0.joined(separator: " ")}
