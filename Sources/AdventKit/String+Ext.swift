@@ -21,7 +21,10 @@ public extension String {
 		components(separatedBy: .newlines)
 	}
 
-	
+	var linesNotEmpty: [String] {
+			components(separatedBy: .newlines).filter {$0 != "" }
+	}
+
 	mutating func replace(_ search: String, with replacement: String) {
 		self = self.replacingOccurrences(of: search, with: replacement)
 	}
